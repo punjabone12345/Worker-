@@ -44,10 +44,13 @@ export default {
         data = { error: "not found" };
       }
     } catch (e) {
-      data = { error: e.message };
+      data = {
+        error: e.message,
+        stack: e.stack,
+      };
     }
 
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify(data, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -68,12 +71,28 @@ function corsHeaders() {
 }
 
 async function oget(path) {
-  const response = await fetch(OANDA_BASE + path, {
-    headers: {
-      Authorization: `Bearer ${OANDA_TOKEN}`,
-      "Accept-Datetime-Format": "RFC3339",
-    },
-  });
+  const url = OANDA_BASE + path;
 
-  return response.json();
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${OANDA_TOKEN}`,
+        "Accept-Datetime-Format": "RFC3339",
+      },
+    });
+
+    const text = await response.text();
+
+    return {
+      request_url: url,
+      status: response.status,
+      ok: response.ok,
+      body: text.substring(0, 2000),
+    };
+  } catch (e) {
+    return {
+      request_url: url,
+      fetch_error: e.message,
+    };
+  }
 }
