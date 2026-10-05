@@ -1,4 +1,4 @@
-const OANDA_TOKEN = "3bd390b7df5a74cc7b41355f3680de4d-3d82122d27f629fe73efcc27f99d542a";
+const OANDA_TOKEN = "f2b74d1cee1eb5488ba8b6b067e3ffc6-b6ccbdca86ea9ddb162f03996341ae91";
 const OANDA_ACCT = "101-001-38845298-002";
 const OANDA_BASE = "https://api-fxpractice.oanda.com/v3";
 
